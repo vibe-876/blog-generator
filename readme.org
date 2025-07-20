@@ -4,3 +4,9 @@
 
 Just a simple translator, some markup language to HTML.
 I'm writing this specifically for usage on my own website's blog -- I can't promise It'll work for you, but feel free to use/fork it if you think it will :3 .
+
+* Markup Spec
+For now, lines beginning with ~#~ become headers, for example, ~#Blog Entry One~ would become ~<h1>Blog Entry One</h1>~.
+Everything else becomes a paragraph (same thing as above, but goes into ~<p></p>~ tags).
+
+You should use escape characters in the same way you would when you're using HTML.
