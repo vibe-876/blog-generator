@@ -35,7 +35,7 @@
                                             (apply str ["href=\"" (second %) "\""])
                                             (first %))))
         
-        :else (taggify "p" raw-line)))
+        :else (taggify "p" "" raw-line)))
 
 (defn -main
   "Program entry point."
