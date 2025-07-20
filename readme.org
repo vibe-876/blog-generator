@@ -1,0 +1,6 @@
+#+title: Blog Generator
+#+author: Camilla A.
+
+
+Just a simple translator, some markup language to HTML.
+I'm writing this specifically for usage on my own website's blog -- I can't promise It'll work for you, but feel free to use/fork it if you think it will :3 .
