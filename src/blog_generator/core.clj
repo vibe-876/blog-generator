@@ -39,9 +39,12 @@
 
 (defn -main
   "Program entry point."
-  [markup-doc output-file header-file]
+  [markup-doc output-file header-file & body-file]
   (let [head (slurp header-file)
-        html-preamble ["<DOCTYPE html>" "<html>" "<head>" head "</head>" "<body>"]
+        html-preamble ["<DOCTYPE html>" "<html>" "<head>" head "</head>" "<body>"
+                       (if (not= '() body-file)
+                         (slurp (first body-file))
+                         "")]
         html-postamble ["</body>" "</html>"]]
     
     (->> (slurp markup-doc)

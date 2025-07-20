@@ -25,5 +25,8 @@ The markup file should be in the format described in the Markup Spec section, an
 The header file is a HTML file that'll be read, and inserted into the head section of the output file, that is, if the contents of the header file is ~x~, then the output will have ~<head>x</head>~.
 I use it to add a title tag, and a css file -- you can use it for /whatever/ you so desire.
 
+There is also, an optional final file, which does the same thing as the header file, but it put at the top of the body instead.
+This is meant to be used for things like topbars, so that the blog can look consistent with the rest of the website.
+
 ** Example Usage:
 ~java -jar blog-generator-0.1.0-SNAPSHOT-standalone.jar blog.markup blog-post.html header.html~
