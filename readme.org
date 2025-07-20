@@ -9,5 +9,7 @@ I'm writing this specifically for usage on my own website's blog -- I can't prom
 For now, lines beginning with ~#~ become headers, for example, ~#Blog Entry One~ would become ~<h1>Blog Entry One</h1>~.
 A link is a line in the form ~!text@uri~, and will be rewritten as ~<a href="uri">text</a>~.
 Everything else becomes a paragraph (same thing as above, but goes into ~<p></p>~ tags).
+This can be abused with inline links, such as ~oh look at me, I'm evaluated as <a href="https://en.wikipedia.org/wiki/Paragraph">a paragraph</a>.~.
+
 
 You should use escape characters in the same way you would when you're using HTML.
