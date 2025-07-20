@@ -3,27 +3,39 @@
   (:require [clojure.string :as str]))
 
 
-(defn trans-markup-to-html
-  "Maps a line of markup into a line of HTML."
+(defn is-link?
+  "Is the line a link?"
   [raw-line]
-  (cond (is-title raw-line) (->> (rest raw-line)
-                                 (apply str)
-                                 (#(taggify "h1" %)))
-        
-        :else (taggify "p" raw-line)))
+  (and (= (first raw-line) \!)
+           (boolean (re-find #"@" raw-line))))
 
-(defn is-title
+(defn is-title?
   "Is this line a title?
-  This should probably be a macro."
+  This should probably be a special case of a macro."
   [raw-line]
   (= (first raw-line) \#))
 
 (defn taggify
   "Enter data between two tags.
-  (taggify a b c) becomes \"<a c>b</a>\"."
-  [tag-name data & extra-data]
-  (apply str ["<" tag-name ">" data "</" tag-name ">"]))
+  (taggify a b c) becomes \"<a b>c</a>\"."
+  [tag-name tag-data data]
+  (apply str ["<" tag-name " " tag-data ">" data "</" tag-name ">"]))
 
+(defn trans-markup-to-html
+  "Maps a line of markup into a line of HTML."
+  [raw-line]
+  (cond (is-title? raw-line) (->> (rest raw-line)
+                                  (apply str)
+                                  (taggify "h1" ""))
+
+        (is-link? raw-line) (->> (rest raw-line)
+                                 (apply str)
+                                 (#(str/split % #"@"))
+                                 (#(taggify "a"
+                                            (apply str ["href=\"" (second %) "\""])
+                                            (first %))))
+        
+        :else (taggify "p" raw-line)))
 
 (defn -main
   "Program entry point."
