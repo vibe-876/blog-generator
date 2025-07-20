@@ -40,7 +40,13 @@
 (defn -main
   "Program entry point."
   [markup-doc & args]
-  (->> (slurp markup-doc)
-       (str/split-lines)
-       (map trans-markup-to-html)
-       (apply str)))
+  (let [css-file "styles.css"
+        output-file "post.html"]
+    (->> (slurp markup-doc)
+         (str/split-lines)
+         (map trans-markup-to-html)
+         (#(vec (concat ["<DOCTYPE html>" "<html>" "<head>"
+                         "<title>Blog Entry</title>" "<link rel=\"stylesheet\" href=\"" css-file "\">"
+                         "</head>" "<body>"] % ["</body>" "</html>"])))
+         (apply str)
+         (spit output-file))))
