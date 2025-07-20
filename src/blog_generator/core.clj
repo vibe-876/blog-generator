@@ -39,14 +39,14 @@
 
 (defn -main
   "Program entry point."
-  [markup-doc & args]
-  (let [css-file "styles.css"
-        output-file "post.html"]
+  [markup-doc output-file header-file]
+  (let [head (slurp header-file)
+        html-preamble ["<DOCTYPE html>" "<html>" "<head>" head "</head>" "<body>"]
+        html-postamble ["</body>" "</html>"]]
+    
     (->> (slurp markup-doc)
          (str/split-lines)
          (map trans-markup-to-html)
-         (#(vec (concat ["<DOCTYPE html>" "<html>" "<head>"
-                         "<title>Blog Entry</title>" "<link rel=\"stylesheet\" href=\"" css-file "\">"
-                         "</head>" "<body>"] % ["</body>" "</html>"])))
+         (#(vec (concat html-preamble % html-postamble)))
          (apply str)
          (spit output-file))))

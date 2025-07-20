@@ -13,3 +13,17 @@ This can be abused with inline links, such as ~oh look at me, I'm evaluated as <
 
 
 You should use escape characters in the same way you would when you're using HTML.
+
+* Building and Usage
+You'll need:
+- [[https://leiningen.org/][Leiningen]]
+- The JVM (to run the uberjar)
+
+Then, it's as simple as cloning the directory, and running ~lein uberjar~ to get an uberjar.
+The uberjar takes three arguments (in this order): the markup file, the output file, and the header file.
+The markup file should be in the format described in the Markup Spec section, and the output file is the name of the file the output should be written to.
+The header file is a HTML file that'll be read, and inserted into the head section of the output file, that is, if the contents of the header file is ~x~, then the output will have ~<head>x</head>~.
+I use it to add a title tag, and a css file -- you can use it for /whatever/ you so desire.
+
+** Example Usage:
+~java -jar blog-generator-0.1.0-SNAPSHOT-standalone.jar blog.markup blog-post.html header.html~
