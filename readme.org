@@ -31,5 +31,5 @@ This is meant to be used for things like topbars, so that the blog can look cons
 ** Example Usage:
 ~java -jar blog-generator-0.1.0-SNAPSHOT-standalone.jar blog.markup blog-post.html header.html~
 
-I have an Emacs Lisp script that automates the running of this, since for me, everything but the name of the markup file is constant, or dependant on the name of the markup file.
-If you're going to use this, I'd recommend doing something similar in your scripting language of choice.
+I wrote an Emacs Lisp script (~build-page.el~) that automates the running of this, since for me, everything but the name of the markup file is constant, or dependant on the name of the markup file.
+If you don't use Emacs (and hence, can't run ~build-page.el~), I'd recommend writing your own wrapper script around the uberjar, in your preferred scripting language.
