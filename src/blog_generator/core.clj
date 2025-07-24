@@ -21,20 +21,29 @@
   [tag-name tag-data data]
   (apply str ["<" tag-name " " tag-data ">" data "</" tag-name ">"]))
 
+(defn to-title
+  "Translate a line into HTML."
+  [raw-line]
+  (->> (rest raw-line)
+       (apply str)
+       (taggify "h1" "")))
+
+(defn to-link
+  "Translate a line into a hyperlink."
+  [raw-line]
+  (->> (rest raw-line)
+       (apply str)
+       (#(str/split % #"@"))
+       (#(taggify "a"
+                  (apply str ["href=\"" (second %) "\""])
+                  (first %)))))
+
+
 (defn trans-markup-to-html
   "Maps a line of markup into a line of HTML."
   [raw-line]
-  (cond (is-title? raw-line) (->> (rest raw-line)
-                                  (apply str)
-                                  (taggify "h1" ""))
-
-        (is-link? raw-line) (->> (rest raw-line)
-                                 (apply str)
-                                 (#(str/split % #"@"))
-                                 (#(taggify "a"
-                                            (apply str ["href=\"" (second %) "\""])
-                                            (first %))))
-        
+  (cond (is-title? raw-line) (to-title raw-line)
+        (is-link? raw-line) (to-link raw-line)
         :else (taggify "p" "" raw-line)))
 
 (defn -main
