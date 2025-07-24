@@ -5,6 +5,11 @@
 Just a simple translator, some markup language to HTML.
 I'm writing this specifically for usage on my own website's blog -- I can't promise It'll work for you, but feel free to use/fork it if you think it will :3 .
 
+Now you may be saying "why are you making this, HTML is easy to write, and you use GNU Emacs with Org Mode anyway, which can be translated to HTML!".
+However, I feel like Org's main strength is that it's just *plain text* -- yes it is beautiful, and extremely efficient because of this, but it can make translation into a more structured language like HTML a bit weird.
+I also have very strong feelings about how I want it to look, and with some CSS things I want, and some skimming of Org's and Pandoc's docs, I felt this would be a bit easier.
+And most importantly by a while, I <3 programming in Clojure, and if I can find an excuse to, I will.
+
 * Markup Spec
 For now, lines beginning with ~#~ become headers, for example, ~#Blog Entry One~ would become ~<h1>Blog Entry One</h1>~.
 A link is a line in the form ~!text@uri~, and will be rewritten as ~<a href="uri">text</a>~.
@@ -33,3 +38,17 @@ This is meant to be used for things like topbars, so that the blog can look cons
 
 I wrote an Emacs Lisp script (~build-page.el~) that automates the running of this, since for me, everything but the name of the markup file is constant, or dependant on the name of the markup file.
 If you don't use Emacs (and hence, can't run ~build-page.el~), I'd recommend writing your own wrapper script around the uberjar, in your preferred scripting language.
+
+* [0/3] Tasks
+** TODO Replace the stupid current translator with a parser.
+This /should/ make adding support for divs easier (see below).
+Also, this could make doing more complex pages easier.
+
+** TODO Add support for divs.
+I'll be using these for little program snippets mainly.
+
+** TODO Write some documentation.
+More specifically:
+- Some documentation on the markup language.
+- The reasons the code is the way it is.
+- Maybe something on wrappers (probably not though).
