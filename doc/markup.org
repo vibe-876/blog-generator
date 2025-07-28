@@ -11,3 +11,26 @@ BNF given below:
   <undiv> ::= ";"
   <paragraph> ::= <character> | <character> <paragraph>
 #+end_example
+
+~<character>~ is just some character.
+
+* Examples
+#+begin_example
+  Hello :3
+  !my most beloved website@vibe-876.github.io
+  ~code
+  (+ 1 2
+     3)
+  ;
+#+end_example
+
+Will evaluate to
+#+begin_src html
+  <p>Hello :3</p>
+  <a href="vibe-876.github.io">my most beloved website</a>
+  <div class="code">
+    <p>(+ 1 2</p>
+    <p>   3)</p>
+  </div>
+#+end_src
+(actually, that's a lie, it'll all be on one line, but that doesn't matter).
