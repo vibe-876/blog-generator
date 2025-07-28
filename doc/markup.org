@@ -2,3 +2,12 @@
 #+author: Camilla A.
 
 
+BNF given below:
+#+begin_example
+  <line> ::= <link> | <header> | <paragraph> | <div> | <undiv>
+  <link> ::= "!" <paragraph> "@" <paragraph>
+  <header> ::= "#" <paragraph>
+  <div> ::= "~" <paragraph>
+  <undiv> ::= ";"
+  <paragraph> ::= <character> | <character> <paragraph>
+#+end_example

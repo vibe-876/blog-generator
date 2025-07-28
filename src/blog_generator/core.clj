@@ -18,7 +18,7 @@
 (defn is-div?
   "Is this line a div?"
   [raw-line]
-  (= (first raw-line) \@))
+  (= (first raw-line) \~))
 
 (defn is-undiv?
   "Is the line the end of a div?"
