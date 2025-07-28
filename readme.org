@@ -40,12 +40,11 @@ I wrote an Emacs Lisp script (~build-page.el~) that automates the running of thi
 If you don't use Emacs (and hence, can't run ~build-page.el~), I'd recommend writing your own wrapper script around the uberjar, in your preferred scripting language.
 
 * Tasks
-** TODO Replace the stupid current translator with a parser.
-This /should/ make adding support for divs easier (see below).
-Also, this could make doing more complex pages easier.
-
 ** TODO Write some documentation.
 More specifically:
 - Some documentation on the markup language.
 - The reasons the code is the way it is.
 - Maybe something on wrappers (probably not though).
+
+** TODO Write an emacs major mode for the markup language.
+[[file:camarkup-mode.el][Current version]].
