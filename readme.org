@@ -13,11 +13,11 @@ And most importantly by a while, I <3 programming in Clojure, and if I can find 
 * Markup Spec
 For now, lines beginning with ~#~ become headers, for example, ~#Blog Entry One~ would become ~<h1>Blog Entry One</h1>~.
 A link is a line in the form ~!text@uri~, and will be rewritten as ~<a href="uri">text</a>~.
+Divs can be started with ~@div-name~, and end on a newline starting with ~;~.
 Everything else becomes a paragraph (same thing as above, but goes into ~<p></p>~ tags).
 This can be abused with inline links, such as ~oh look at me, I'm evaluated as <a href="https://en.wikipedia.org/wiki/Paragraph">a paragraph</a>.~.
 
-
-You should use escape characters in the same way you would when you're using HTML.
+If this isn't clear enough, please read the [[file:doc/markup.org][docs]] on the subject, or contact me.
 
 * Building and Usage
 You'll need:
@@ -39,12 +39,12 @@ This is meant to be used for things like topbars, so that the blog can look cons
 I wrote an Emacs Lisp script (~build-page.el~) that automates the running of this, since for me, everything but the name of the markup file is constant, or dependant on the name of the markup file.
 If you don't use Emacs (and hence, can't run ~build-page.el~), I'd recommend writing your own wrapper script around the uberjar, in your preferred scripting language.
 
-* [0/3] Tasks
+* [1/3] Tasks
 ** TODO Replace the stupid current translator with a parser.
 This /should/ make adding support for divs easier (see below).
 Also, this could make doing more complex pages easier.
 
-** TODO Add support for divs.
+** DONE Add support for divs.
 I'll be using these for little program snippets mainly.
 
 ** TODO Write some documentation.
