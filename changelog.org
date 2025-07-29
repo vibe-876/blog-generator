@@ -6,7 +6,7 @@
 - A GNU Emacs major mode for camarkup (I.E., the markup language).
 - Better usage, possibly an install script.
  
-* 0.1.0: 2025-07-28
+* 0.1: 2025-07-28
 Initial release.
 Camarkup can be translated to HTML, all kinda works.
 

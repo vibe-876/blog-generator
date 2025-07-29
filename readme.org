@@ -2,7 +2,7 @@
 #+author: Camilla A.
 
 
-Just a simple translator, some markup language to HTML.
+Just a simple translator, a markup language called camarkup to HTML.
 I'm writing this specifically for usage on my own website's blog -- I can't promise It'll work for you, but feel free to use/fork it if you think it will :3 .
 
 Now you may be saying "why are you making this, HTML is easy to write, and you use GNU Emacs with Org Mode anyway, which can be translated to HTML!".
@@ -10,7 +10,7 @@ However, I feel like Org's main strength is that it's just *plain text* -- yes i
 I also have very strong feelings about how I want it to look, and with some CSS things I want, and some skimming of Org's and Pandoc's docs, I felt this would be a bit easier.
 And most importantly by a while, I <3 programming in Clojure, and if I can find an excuse to, I will.
 
-* Markup Spec
+* Camarkup Spec
 For now, lines beginning with ~#~ become headers, for example, ~#Blog Entry One~ would become ~<h1>Blog Entry One</h1>~.
 A link is a line in the form ~!text@uri~, and will be rewritten as ~<a href="uri">text</a>~.
 Divs can be started with ~\~div-name~, and end on a newline starting with ~;~.
@@ -25,8 +25,7 @@ You'll need:
 - The JVM (to run the uberjar)
 
 Then, it's as simple as cloning the directory, and running ~lein uberjar~ to get an uberjar.
-The uberjar takes three arguments (in this order): the markup file, the output file, and the header file.
-The markup file should be in the format described in the Markup Spec section, and the output file is the name of the file the output should be written to.
+The uberjar takes three arguments (in this order): the camarkup file, the output file, and the header file.
 The header file is a HTML file that'll be read, and inserted into the head section of the output file, that is, if the contents of the header file is ~x~, then the output will have ~<head>x</head>~.
 I use it to add a title tag, and a css file -- you can use it for /whatever/ you so desire.
 
@@ -36,15 +35,6 @@ This is meant to be used for things like topbars, so that the blog can look cons
 ** Example Usage:
 ~java -jar blog-generator-0.1.0-SNAPSHOT-standalone.jar blog.markup blog-post.html header.html~
 
-I wrote an Emacs Lisp script (~build-page.el~) that automates the running of this, since for me, everything but the name of the markup file is constant, or dependant on the name of the markup file.
-If you don't use Emacs (and hence, can't run ~build-page.el~), I'd recommend writing your own wrapper script around the uberjar, in your preferred scripting language.
-
-* Tasks
-** TODO Write some documentation.
-More specifically:
-- Some documentation on the markup language.
-- The reasons the code is the way it is.
-- Maybe something on wrappers (probably not though).
-
-** TODO Write an emacs major mode for the markup language.
-[[file:camarkup-mode.el][Current version]].
+There's a GNU Emacs mode for camarkup, [[file:camarkup-mode.el][just here]].
+Documentation for it is found [[file:doc/camarkup-mode.org][here]].
+It's not finished yet, that'll be in the 0.2 release

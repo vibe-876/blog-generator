@@ -1,4 +1,4 @@
-;; Get it, Cam's Markup, camarkup. Hilarious, I know.
+;; Get it, Cam's Markup, camarkup? Hilarious, I know.
 ;; I didn't want to risk messing up someone's preexisting
 ;; markup-mode (I'm assuming that exists somewhere in the ether).
 

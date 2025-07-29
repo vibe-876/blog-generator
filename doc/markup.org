@@ -2,6 +2,9 @@
 #+author: Camilla A.
 
 
+A camarkup file should end in ~.cmu~, but this isn't essential (it only really applies if you want to use the GNU Emacs mode for it).
+
+* Language Spec
 BNF given below:
 #+begin_example
   <line> ::= <link> | <header> | <paragraph> | <div> | <undiv>
