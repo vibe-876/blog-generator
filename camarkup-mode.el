@@ -3,6 +3,11 @@
 ;; markup-mode (I'm assuming that exists somewhere in the ether).
 
 
+
+(setq camarkup-header-file "header.html"
+      camarkup-body-file "body.html"
+      camarkup-jar "target/uberjar/blog-generator-0.1.0-SNAPSHOT-standalone.jar")
+
 (defun camarkup-insert-link ()
   "Insert a camarkup style link at the
 current position of the cursor.
@@ -13,20 +18,22 @@ This should only be called interactively."
 	(text (read-string "Text to display: ")))
     (insert (concat "!" text "@" address "\n"))))
 
-(defun camarkup-build-page (page-name &optional header-file body-file)
+(defun camarkup-build-page ()
   "Builds a webpage using https://github.com/vibe-876/blog-generator.
 This should not be used for anything else, or by anyone else, since it
 relies on for specific non-public files I've written."
   (interactive)
-  (let ((header (if (equal header-file nil) "header.html" header-file))
-	(body (if (equal body-file nil) "body.html" body-file)))
-
-    (shell-command (concat "java -jar bg.jar "
-			   page-name " "
-			   page-name ".html "
-			   header " " body))
-
-    (message "Done :3 .")))
+  (if (and camarkup-header-file camarkup-body-file)
+      (let ((page-name (file-name-base (buffer-name))))
+	
+	(shell-command (concat "java -jar "
+			       (if camarkup-jar camarkup-jar "/usr/local/bin/blogg.jar")
+			       " " (buffer-name) " "
+			       page-name ".html "
+			       camarkup-header-file " " camarkup-body-file))
+	(message "Done :3 ."))
+    
+    (message "Error: are camarkup-header-file and camarkup-body-file both defined?")))
 
 
 (defvar-keymap camarkup-mode-map
