@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [blog-generator.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest trans-p
+  (testing "Are paragraphs translated properly"
+    (is (= (blog-generator.core/taggify "p" "class=\"paragraph\"" "Hello, World :3 !")
+           "<p class=\"paragraph\">Hello, World :3 !</p>"))))

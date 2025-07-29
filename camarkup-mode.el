@@ -3,10 +3,9 @@
 ;; markup-mode (I'm assuming that exists somewhere in the ether).
 
 
-
 (setq camarkup-header-file "header.html"
       camarkup-body-file "body.html"
-      camarkup-jar "target/uberjar/blog-generator-0.1.0-SNAPSHOT-standalone.jar")
+      camarkup-jar "target/uberjar/blog-generator-0.1-SNAPSHOT-standalone.jar")
 
 (defun camarkup-insert-link ()
   "Insert a camarkup style link at the
