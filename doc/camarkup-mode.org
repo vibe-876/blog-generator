@@ -1,0 +1,12 @@
+#+title: The Emacs Major Mode
+#+author: Camilla A.
+
+
+Please note that *all* of this is likely to change, before the 1.0 release.
+I cannot promise it'll be stable until then.
+
+
+* Usage of camarkup-mode
+The commands are as follows:
+- ~C-c i~ Inserts a link
+- ~C-c C-c~ translates the cmu (camarkup) file into HTML
