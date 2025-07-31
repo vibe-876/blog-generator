@@ -5,6 +5,7 @@
 * Unreleased
 - A GNU Emacs major mode for camarkup (I.E., the markup language).
 - Better usage, possibly an install script.
+- Support for RSS feeds.
  
 * 0.1: 2025-07-28
 Initial release.
