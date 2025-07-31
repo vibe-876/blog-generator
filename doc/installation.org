@@ -7,11 +7,11 @@ In the root directory of the project.
 #+begin_src shell
   git clone https://github.com/vibe-876/blog-generator
   cd blog-generator
-  make
-  sudo make install
+  lein uberjar
+  cp target/uberjar/<jar-file> <somewhere-in-your-path>
 #+end_src
 
-Then, load the elisp program somewhere in your ~init.el~.
+If you use Emacs, I'd recommend also loading [[file:~/Programming/Projects/blog-generator/camarkup-mode.el][the mode]] for camarkup somewhere in your ~init.el~.
 If you don't use Emacs, your options are call the jar manually (the Emacs mode is just a wrapper around the jar), or write a plug-in for your editor of choice.
 
 I might make a more "official" download method at some point, that'll be in the 1.0 release.
