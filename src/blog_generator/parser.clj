@@ -31,13 +31,17 @@
   Once the input is empty, the left hand side of the vector will
   be written as nil."
   [partial-ast]
-  (let [camarkup-string (last partial-ast)]
+  (let [camarkup-string (last partial-ast)
+        previous-p-ast (apply vector (drop-last partial-ast))]
+    
     (loop [camarkup camarkup-string
            current-character (first camarkup-string)
            carry-chunk ""]
 
-      (cond (empty? camarkup) [nil (apply str (rest camarkup))]
-            (= \  current-character) [{:word carry-chunk} (apply str (rest camarkup))]
+      (cond (empty? camarkup) [previous-p-ast nil]
+            (= \  current-character) (apply vector
+                                            (concat previous-p-ast [{:word carry-chunk}
+                                                                    (apply str (rest camarkup))]))
             (= \{ current-character) (parse-link camarkup)
             :else (recur (rest camarkup)
                          (second camarkup)
@@ -47,7 +51,8 @@
   "Translate a camarkup string into the internal
   representation used."
   [camarkup-string]
-  (loop [ast []]
-    (if (= (first (last ast)) nil)
+  (loop [ast [camarkup-string]]
+    (println ast)
+    (if (= (last ast) "")
       ast
-      (recur (vector ast (next-chunk))))))
+      (recur (next-chunk ast)))))

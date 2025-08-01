@@ -1,6 +1,7 @@
 (ns blog-generator.core
   (:gen-class)
   (:require [clojure.string :as string]
+            [blog-generator.parser :as parser]
             [blog-generator.rss :as rss]))
 
 
