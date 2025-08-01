@@ -2,7 +2,7 @@
   (:gen-class)
   (:require [clojure.string :as string]))
 
-;;        (#(string/split % #"@"))
+
 (defn parse-link
   "Parses a camarkup link. Links should be in the
   form {text@uri}, where text is the text to be
@@ -10,7 +10,7 @@
   [camarkup-string]
   (let [raw-link (string/split camarkup-string #"@")]
     (loop [camarkup (second raw-link)
-           current-point (first camarkup-string)
+           current-point (first camarkup)
            uri ""]
       
       (cond (empty? camarkup) [{:error "End of string found while parsing a link!"} ""]
@@ -30,22 +30,24 @@
 
   Once the input is empty, the left hand side of the vector will
   be written as nil."
-  [camarkup-string]
-  (loop [camarkup camarkup-string
-         current-character (first camarkup-string)
-         carry-chunk ""]
+  [partial-ast]
+  (let [camarkup-string (last partial-ast)]
+    (loop [camarkup camarkup-string
+           current-character (first camarkup-string)
+           carry-chunk ""]
 
-    (cond (empty? camarkup) [nil (apply str (rest camarkup))]
-          (= \  current-character) [{:word carry-chunk} (apply str (rest camarkup))]
-          (= \{ current-character) (parse-link camarkup)
-          :else (recur (rest camarkup)
-                       (second camarkup)
-                       (str carry-chunk current-character)))))
+      (cond (empty? camarkup) [nil (apply str (rest camarkup))]
+            (= \  current-character) [{:word carry-chunk} (apply str (rest camarkup))]
+            (= \{ current-character) (parse-link camarkup)
+            :else (recur (rest camarkup)
+                         (second camarkup)
+                         (str carry-chunk current-character))))))
 
 (defn trans-camarkup-ir
   "Translate a camarkup string into the internal
   representation used."
   [camarkup-string]
-  (loop [camarkup-rest camarkup-string
-         current-chunk (next-chunk camarkup-string)]
-    (recur 0 0)))
+  (loop [ast []]
+    (if (= (first (last ast)) nil)
+      ast
+      (recur (vector ast (next-chunk))))))
