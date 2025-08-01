@@ -38,11 +38,12 @@
            current-character (first camarkup-string)
            carry-chunk ""]
 
-      (cond (empty? camarkup) [previous-p-ast nil]
+      (cond (empty? camarkup) [previous-p-ast ""]
             (= \  current-character) (apply vector
                                             (concat previous-p-ast [{:word carry-chunk}
                                                                     (apply str (rest camarkup))]))
-            (= \{ current-character) (parse-link camarkup)
+            (= \{ current-character) (apply vector
+                                            (concat previous-p-ast (parse-link camarkup)))
             :else (recur (rest camarkup)
                          (second camarkup)
                          (str carry-chunk current-character))))))
@@ -52,7 +53,6 @@
   representation used."
   [camarkup-string]
   (loop [ast [camarkup-string]]
-    (println ast)
     (if (= (last ast) "")
-      ast
+      (drop-last ast)
       (recur (next-chunk ast)))))
