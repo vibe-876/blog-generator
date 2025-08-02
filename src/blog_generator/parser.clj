@@ -10,8 +10,16 @@
   ([ast other-ast]
    (apply vector
           (concat (drop-last ast) other-ast)))
-  ([ast other-ast & extra-asts]
-   (reduce add-asts (apply vector ast other-ast extra-asts))))
+
+  ([ast other-ast & asts]
+   (loop [summed (add-asts ast other-ast)
+          next-ast (first asts)
+          remaining (rest asts)]
+     (if (empty? remaining)
+       (add-asts summed next-ast)
+       (recur (add-asts summed next-ast)
+              (first remaining)
+              (rest remaining))))))
 
 (defn take-until
   "Takes some boolean function p?, and and take elements
@@ -36,26 +44,37 @@
           :else  (recur (rest coll-seq)
                         (second coll-seq)))))
 
+(defn rtake-until
+  "Calls take-until, and then rest on the result."
+  [p? coll]
+  (->> coll
+       (take-until p?)
+       (rest)))
+
+(defn rdrop-until
+  "Calls drop-until, and then rest on the result."
+  [p? coll]
+  (->> coll
+       (drop-until p?)
+       (rest)))
+
+
 (defn parse-link
   "Parses a camarkup link. Links should be in the
   form {text@uri}, where text is the text to be
   displayed."
   [camarkup-string]
-  (let [raw-link (take-until #(= \@ %) camarkup-string)]
-    (loop [camarkup (second raw-link)
-           current-point (first camarkup)
-           uri ""]
-      
-      (cond (empty? camarkup) [{:error "End of string found while parsing a link!"} ""]
-            (= \} current-point) [{:link [{:text (->> (first raw-link)
-                                                      (rest)
-                                                      (apply str))}
-                                          {:uri uri}]}
-                                  (apply str (rest camarkup))]
-
-            :else (recur (rest camarkup)
-                         (second camarkup)
-                         (str uri current-point))))))
+  (let [at-middle? #(= \@ %)
+        at-end? #(= \} %)
+        
+        text (rtake-until at-middle? camarkup-string)
+        rhs (drop-until at-middle? camarkup-string)
+        uri (rtake-until at-end? rhs)
+        remaining (rdrop-until at-end? rhs)]
+    
+    [{:link {:text (apply str text)
+             :uri (apply str uri)}}
+     (apply str remaining)]))
 
 ;; {:div-name code [
 (defn parse-div
@@ -77,8 +96,7 @@
            carry-chunk ""]
 
       (cond (empty? camarkup) [previous-p-ast ""]
-            (= \  current-character) (add-asts previous-p-ast {:word carry-chunk}
-                                               (apply str (rest camarkup)))
+            (= \  current-character) (conj )
             ;; (= \# current-character) (add-asts previous-p-ast [{:word carry-chunk}] (parse-div))>
             (= \{ current-character) (add-asts previous-p-ast (parse-link camarkup))
 
