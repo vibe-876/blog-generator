@@ -1,6 +1,5 @@
 (ns blog-generator.parser
-  (:gen-class)
-  (:require [clojure.string :as string]))
+  (:gen-class))
 
 
 (defn add-asts
