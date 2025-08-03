@@ -11,13 +11,7 @@ I also have very strong feelings about how I want it to look, and with some CSS 
 And most importantly by a while, I <3 programming in Clojure, and if I can find an excuse to, I will.
 
 * Camarkup Spec
-For now, lines beginning with ~#~ become headers, for example, ~#Blog Entry One~ would become ~<h1>Blog Entry One</h1>~.
-A link is a line in the form ~!text@uri~, and will be rewritten as ~<a href="uri">text</a>~.
-Divs can be started with ~\~div-name~, and end on a newline starting with ~;~.
-Everything else becomes a paragraph (same thing as above, but goes into ~<p></p>~ tags).
-This can be abused with inline links, such as ~oh look at me, I'm evaluated as <a href="https://en.wikipedia.org/wiki/Paragraph">a paragraph</a>.~.
-
-If this isn't clear enough, please read the [[file:doc/markup.org][docs]] on the subject, or contact me.
+The spec for camarkup is [[file:doc/markup.org][here]].
 
 * Building and Usage
 You'll need:

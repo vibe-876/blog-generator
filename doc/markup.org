@@ -4,36 +4,30 @@
 
 A camarkup file should end in ~.cmu~, but this isn't essential (it only really applies if you want to use the GNU Emacs mode for it).
 
-* Language Spec
-BNF given below:
-#+begin_example
-  <line> ::= <link> | <header> | <paragraph> | <div> | <undiv>
-  <link> ::= "!" <paragraph> "@" <paragraph>
-  <header> ::= "#" <paragraph>
-  <div> ::= "~" <paragraph>
-  <undiv> ::= ";"
-  <paragraph> ::= <character> | <character> <paragraph>
-#+end_example
-
-~<character>~ is just some character.
 
 * Examples
 #+begin_example
-  Hello :3
-  !my most beloved website@vibe-876.github.io
+  #Blog Entry!
+  ##Hello
+  Here is {my most beloved website@vibe-876.github.io} :3 .
   ~code
   (+ 1 2
      3)
-  ;
+  ~
+
+  ;coffee@./images/coffee.png
 #+end_example
 
 Will evaluate to
 #+begin_src html
-  <p>Hello :3</p>
-  <a href="vibe-876.github.io">my most beloved website</a>
+  <h1>Blog Entry!</h1>
+  <h2>Hello</h2>
+  <p>Here is <a href="vibe-876.github.io">my most beloved website</a> :3 .</p>
   <div class="code">
     <p>(+ 1 2</p>
     <p>   3)</p>
   </div>
+
+  <img src="./images/coffee.png" alt="coffee">
 #+end_src
 (actually, that's a lie, it'll all be on one line, but that doesn't matter).
