@@ -122,13 +122,14 @@
   string."
   [partial-ast]
   (let [starts [\{ \#]
-        ends (concat [\ ] starts)
+        ends (concat [\  \newline] starts)
         fl-char (first (last partial-ast))]
     
     (add-asts partial-ast (if (some #{fl-char}
                                     starts)
                             (lex-chunk-start partial-ast)
                             (lex-chunk-end partial-ast ends)))))
+
 
 (defn trans-camarkup-ir
   "Translate a camarkup string into the internal
