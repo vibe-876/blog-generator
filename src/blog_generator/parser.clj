@@ -75,15 +75,32 @@
              :uri (apply str uri)}}
      (apply str remaining)]))
 
+(defn parse-header
+  "Parses a header."
+  [camarkup-string]
+  0)
+
 (defn lex-chunk-start
   "Lexer for a single chunk."
   [unknown-chunk]
-  (cond ;(= identifier \{) (parse-link unknown-chunk)
-        :else {:error unknown-chunk}))
+  (let [start-symbol (first (last unknown-chunk))]
+    (cond (= \{ start-symbol) (parse-link unknown-chunk)
+          (= \# start-symbol) (parse-header unknown-chunk)
+          :else [{:error unknown-chunk} ""])))
 
 (defn lex-chunk-end
-  [unknown-chunk]
-  0)
+  [unknown-chunk ends]
+  (loop [remaining-chunk (last unknown-chunk)
+         carry-chunk ""
+         current-char (first remaining-chunk)]
+
+    (if (or (some #{current-char} ends)
+            (not current-char))
+      
+      [{:word carry-chunk} (rest remaining-chunk)]
+      (recur (rest remaining-chunk)
+             (str carry-chunk current-char)
+             (second remaining-chunk)))))
 
 (defn next-chunk
   "Get the next chunk of the camarkup string.
@@ -95,17 +112,16 @@
         ends (concat [\ ] starts)
         fl-char (first (last partial-ast))]
     
-    (if (some #{fl-char}
-              starts)
-      (lex-chunk-start partial-ast)
-      (lex-chunk-end partial-ast))))
+    (add-asts partial-ast (if (some #{fl-char}
+                                    starts)
+                            (lex-chunk-start partial-ast)
+                            (lex-chunk-end partial-ast ends)))))
 
 (defn trans-camarkup-ir
   "Translate a camarkup string into the internal
   representation used."
   [camarkup-string]
   (loop [ast [camarkup-string]]
-    (println ast)
-    (if (= (last ast) "")
+    (if (empty? (last ast))
       (drop-last ast)
       (recur (next-chunk ast)))))
