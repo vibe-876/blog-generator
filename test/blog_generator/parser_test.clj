@@ -26,3 +26,21 @@
            [{:link {:text "Camilla's Website"
                     :uri "vibe-876.github.io"}}
             " is her website."]))))
+
+(deftest div-opening-working?
+  (testing "Are the openings for divs get parsed properly?"
+    (is (= [{:div "code"} '(\( \+ \  \1 \  \2 \) \newline \~)]
+           (parse-div "~code\n(+ 1 2)\n~")))))
+
+(deftest div-closeing-working?
+  (testing "Are the closing for divs getting parsed properly?"
+    (is (= [{:end-div 'undefined} '(\: \3)]
+           (parse-div "~\n:3")))))
+
+(deftest div-segment
+  (testing "Are the divs parsed properly over multiple lines?"
+    (is (= [{:div "code"}
+            {:word "++x++;"}
+            {:word "return(x);"}
+            {:end-div 'undefined}]
+           (trans-camarkup-ir "~code\n++x++;\nreturn(x);\n~")))))

@@ -92,6 +92,24 @@
              (+ header-level 1)
              (second remaining-chunk)))))
 
+(defn parse-div
+  "Parses a div."
+  [camarkup-string]
+  (if (or (= (second camarkup-string) \newline)
+          (= (second camarkup-string) nil))
+    [{:end-div 'undefined} (rest (rest camarkup-string))]
+
+    (loop [remaining-string (rest camarkup-string)
+           current-char (first remaining-string)
+           carry-chunk ""]
+
+      (if (= current-char \newline)
+        [{:div carry-chunk} (rest remaining-string)]
+        (recur (rest remaining-string)
+               (second remaining-string)
+               (str carry-chunk current-char))))))
+
+
 (defn lex-chunk-start
   "Lexer for a single chunk."
   [unknown-chunk]
@@ -99,6 +117,7 @@
         remaining (last unknown-chunk)]
     (cond (= \{ start-symbol) (parse-link remaining)
           (= \# start-symbol) (parse-header remaining)
+          (= \~ start-symbol) (parse-div remaining)
           :else [{:error unknown-chunk} ""])))
 
 (defn lex-chunk-end
@@ -121,7 +140,7 @@
   the parsed lexeme, and the second being the remaining unparsed
   string."
   [partial-ast]
-  (let [starts [\{ \#]
+  (let [starts [\{ \# \~]
         ends (concat [\  \newline] starts)
         fl-char (first (last partial-ast))]
     
