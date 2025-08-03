@@ -75,10 +75,14 @@
              :uri (apply str uri)}}
      (apply str remaining)]))
 
-;; {:div-name code [
-(defn parse-div
-  "Parses a div."
-  []
+(defn lex-chunk-start
+  "Lexer for a single chunk."
+  [unknown-chunk]
+  (cond ;(= identifier \{) (parse-link unknown-chunk)
+        :else {:error unknown-chunk}))
+
+(defn lex-chunk-end
+  [unknown-chunk]
   0)
 
 (defn next-chunk
@@ -87,21 +91,14 @@
   the parsed lexeme, and the second being the remaining unparsed
   string."
   [partial-ast]
-  (let [camarkup-string (last partial-ast)
-        previous-p-ast (apply vector (drop-last partial-ast))]
+  (let [starts [\{ \#]
+        ends (concat [\ ] starts)
+        fl-char (first (last partial-ast))]
     
-    (loop [camarkup camarkup-string
-           current-character (first camarkup-string)
-           carry-chunk ""]
-
-      (cond (empty? camarkup) [previous-p-ast ""]
-            (= \  current-character) (conj )
-            ;; (= \# current-character) (add-asts previous-p-ast [{:word carry-chunk}] (parse-div))>
-            (= \{ current-character) (add-asts previous-p-ast (parse-link camarkup))
-
-            :else (recur (rest camarkup)
-                         (second camarkup)
-                         (str carry-chunk current-character))))))
+    (if (some #{fl-char}
+              starts)
+      (lex-chunk-start partial-ast)
+      (lex-chunk-end partial-ast))))
 
 (defn trans-camarkup-ir
   "Translate a camarkup string into the internal
