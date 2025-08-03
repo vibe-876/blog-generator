@@ -57,6 +57,13 @@
        (drop-until p?)
        (rest)))
 
+(defn rbetween
+  "Takes the sub-sequence between two predicates."
+  [p1? p2? coll]
+  (->> coll
+       (rdrop-until p1?)
+       (take-until p2?)))
+
 
 (defn parse-link
   "Parses a camarkup link. Links should be in the
@@ -109,6 +116,17 @@
                (second remaining-string)
                (str carry-chunk current-char))))))
 
+(defn parse-image
+  "Parses an image."
+  [camarkup-string]
+  (let [alt-text (rtake-until #(= \@ %) camarkup-string)
+        location (rbetween #(= \@ %) #(= \newline % )camarkup-string)
+        remaining (rdrop-until #(= \newline %) camarkup-string)]
+    
+    [{:image {:location (apply str location)
+              :alt-text (apply str alt-text)}}
+     remaining]))
+
 
 (defn lex-chunk-start
   "Lexer for a single chunk."
@@ -118,6 +136,7 @@
     (cond (= \{ start-symbol) (parse-link remaining)
           (= \# start-symbol) (parse-header remaining)
           (= \~ start-symbol) (parse-div remaining)
+          (= \; start-symbol) (parse-image remaining)
           :else [{:error unknown-chunk} ""])))
 
 (defn lex-chunk-end
@@ -140,7 +159,7 @@
   the parsed lexeme, and the second being the remaining unparsed
   string."
   [partial-ast]
-  (let [starts [\{ \# \~]
+  (let [starts [\{ \# \~ \;]
         ends (concat [\  \newline] starts)
         fl-char (first (last partial-ast))]
     
