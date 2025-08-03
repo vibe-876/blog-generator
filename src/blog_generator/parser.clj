@@ -78,14 +78,27 @@
 (defn parse-header
   "Parses a header."
   [camarkup-string]
-  0)
+  (loop [remaining-chunk camarkup-string
+         header-level 0
+         current-char (first remaining-chunk)]
+    
+    (if (not= \# current-char)
+      [{:header {:level header-level
+                 :text (apply str (take-until #(= \newline %)
+                                              remaining-chunk))}}
+       (apply str (rdrop-until #(= \newline %) remaining-chunk))]
+      
+      (recur (rest remaining-chunk)
+             (+ header-level 1)
+             (second remaining-chunk)))))
 
 (defn lex-chunk-start
   "Lexer for a single chunk."
   [unknown-chunk]
-  (let [start-symbol (first (last unknown-chunk))]
-    (cond (= \{ start-symbol) (parse-link unknown-chunk)
-          (= \# start-symbol) (parse-header unknown-chunk)
+  (let [start-symbol (first (last unknown-chunk))
+        remaining (last unknown-chunk)]
+    (cond (= \{ start-symbol) (parse-link remaining)
+          (= \# start-symbol) (parse-header remaining)
           :else [{:error unknown-chunk} ""])))
 
 (defn lex-chunk-end
