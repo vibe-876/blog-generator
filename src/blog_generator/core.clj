@@ -11,7 +11,7 @@
   [file-name output-type]
   (->> (slurp file-name)
        (parser/trans-camarkup-ir)
-       (tree/organise-tree)
+       (tree/organise-ast)
        (#(cond (= output-type "html") (html/trans-ir-html %)
                (= output-type "rss") (rss/trans-ir-rss %)
                (= output-type "ir") ["raw.ir" (apply str %)]
