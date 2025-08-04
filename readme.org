@@ -19,16 +19,7 @@ You'll need:
 - The JVM (to run the uberjar)
 
 Then, it's as simple as cloning the directory, and running ~lein uberjar~ to get an uberjar.
-The uberjar takes three arguments (in this order): the camarkup file, the output file, and the header file.
-The header file is a HTML file that'll be read, and inserted into the head section of the output file, that is, if the contents of the header file is ~x~, then the output will have ~<head>x</head>~.
-I use it to add a title tag, and a css file -- you can use it for /whatever/ you so desire.
-
-There is also, an optional final file, which does the same thing as the header file, but it put at the top of the body instead.
-This is meant to be used for things like topbars, so that the blog can look consistent with the rest of the website.
-
-** Example Usage:
-~java -jar blog-generator-0.1.0-SNAPSHOT-standalone.jar blog.markup blog-post.html header.html~
+I'd recommend however, that you run ~lein test~ before this, to ensure that I haven't pushed some breaking change into the master branch.
 
 There's a GNU Emacs mode for camarkup, [[file:camarkup-mode.el][just here]].
 Documentation for it is found [[file:doc/camarkup-mode.org][here]].
-It's not finished yet, that'll be in the 0.2 release
