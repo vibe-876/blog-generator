@@ -1,24 +1,7 @@
 (ns blog-generator.parser
-  (:gen-class))
+  (:gen-class)
+  (:require [blog-generator.tree/add-asts :as add-asts]))
 
-
-(defn add-asts
-  "Appends the old partial AST to the new one."
-  ([ast]
-   ast)
-  ([ast other-ast]
-   (apply vector
-          (concat (drop-last ast) other-ast)))
-
-  ([ast other-ast & asts]
-   (loop [summed (add-asts ast other-ast)
-          next-ast (first asts)
-          remaining (rest asts)]
-     (if (empty? remaining)
-       (add-asts summed next-ast)
-       (recur (add-asts summed next-ast)
-              (first remaining)
-              (rest remaining))))))
 
 (defn take-until
   "Takes some boolean function p?, and and take elements
