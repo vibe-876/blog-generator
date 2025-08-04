@@ -127,6 +127,18 @@
               :alt-text (apply str alt-text)}}
      remaining]))
 
+(defn parse-head
+  "Not to be confused with parse-header."
+  [camarkup-string]
+  (let [remaining (rdrop-until #(= \newline %) camarkup-string)
+        title (rtake-until #(= \& %) camarkup-string)
+        links (rbetween #(= \& %)
+                        #(= \newline %)
+                        camarkup-string)]
+    
+    [{:head {:title (apply str title)
+             :css (apply str links)}}
+     remaining]))
 
 (defn lex-chunk-start
   "Lexer for a single chunk."
@@ -137,6 +149,7 @@
           (= \# start-symbol) (parse-header remaining)
           (= \~ start-symbol) (parse-div remaining)
           (= \; start-symbol) (parse-image remaining)
+          (= \+ start-symbol) (parse-head remaining)
           :else [{:error unknown-chunk} ""])))
 
 (defn lex-chunk-end
@@ -159,7 +172,7 @@
   the parsed lexeme, and the second being the remaining unparsed
   string."
   [partial-ast]
-  (let [starts [\{ \# \~ \;]
+  (let [starts [\{ \# \~ \; \+]
         ends (concat [\  \newline] starts)
         fl-char (first (last partial-ast))]
     
