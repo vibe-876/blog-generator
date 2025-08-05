@@ -39,8 +39,7 @@
 
 (deftest div-segment
   (testing "Are the divs parsed properly over multiple lines?"
-    (is (= [{:div "code"}
-            {:word "++x++;"}
-            {:word "return(x);"}
+    (is (= [{:div "text"}
+            {:word "Hello,"} {:word "World!"}
             {:end-div 'undefined}]
-           (trans-camarkup-ir "~code\n++x++;\nreturn(x);\n~")))))
+           (trans-camarkup-ir "~text\nHello, World!\n~")))))

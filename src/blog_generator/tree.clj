@@ -35,7 +35,6 @@
                 :text text}}
       ast-node)))
 
-
 (defn organise-ast
   "Organise the AST."
   [ast]

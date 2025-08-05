@@ -1,6 +1,6 @@
 (ns blog-generator.parser
   (:gen-class)
-  (:require [blog-generator.tree/add-asts :as add-asts]))
+  (:require [blog-generator.tree :as tree]))
 
 
 (defn take-until
@@ -159,7 +159,7 @@
         ends (concat [\  \newline] starts)
         fl-char (first (last partial-ast))]
     
-    (add-asts partial-ast (if (some #{fl-char}
+    (tree/add-asts partial-ast (if (some #{fl-char}
                                     starts)
                             (lex-chunk-start partial-ast)
                             (lex-chunk-end partial-ast ends)))))
