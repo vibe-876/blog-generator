@@ -7,6 +7,7 @@ A camarkup file should end in ~.cmu~, but this isn't essential (it only really a
 
 * Examples
 #+begin_example
+  +Blogs&styles.css
   #Blog Entry!
   ##Hello
   Here is {my most beloved website@vibe-876.github.io} :3 .
@@ -20,14 +21,23 @@ A camarkup file should end in ~.cmu~, but this isn't essential (it only really a
 
 Will evaluate to
 #+begin_src html
-  <h1>Blog Entry!</h1>
-  <h2>Hello</h2>
-  <p>Here is <a href="vibe-876.github.io">my most beloved website</a> :3 .</p>
-  <div class="code">
-    <p>(+ 1 2</p>
-    <p>   3)</p>
-  </div>
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Blog</title>
+      <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+      <h1>Blog Entry!</h1>
+      <h2>Hello</h2>
+      <p>Here is <a href="vibe-876.github.io">my most beloved website</a> :3 .</p>
+      <div class="code">
+        <p>(+ 1 2</p>
+        <p>   3)</p>
+      </div>
 
-  <img src="./images/coffee.png" alt="coffee">
+      <img src="./images/coffee.png" alt="coffee">
+    </body>
+  </html>
 #+end_src
 (actually, that's a lie, it'll all be on one line, but that doesn't matter).
