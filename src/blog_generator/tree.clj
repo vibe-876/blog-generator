@@ -38,10 +38,10 @@
 (defn organise-ast
   "Organise the AST."
   [ast]
-  [{:head (->> ast
-               (map :head)
-               (filter #(not= nil %)))
-    
-    :body (->> ast
-               (filter #(= (:head %) nil))
-               (map fix-header))}])
+  {:head (->> ast
+              (map :head)
+              (filter #(not= nil %)))
+   
+   :body (->> ast
+              (filter #(= (:head %) nil))
+              (map fix-header))})
