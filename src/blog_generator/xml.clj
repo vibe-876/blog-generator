@@ -10,19 +10,31 @@
    (apply str ["<" tag ">" data "</" tag ">"])))
 
 
-(defn trans-node-xml
+
+
+(defn trans-ir-xml
   "Translate the internal representation into
   xml.
 
   Note, this assumes that there's only one thing
-  inside the map."
-  [node]
-  (let [type (keys node)
-        data (vals node)]
-    
-    (cond (and (coll? data)
-               (not (string? (first data))))
-          (tag-pair "super-node" (trans-node-xml data))
+  inside the map.
 
-          :else (tag-pair "node"
-                          (first data)))))
+  The node table is a vector of keys, and tag names.
+  For example, setting [{:word \"p\"}] will translate
+  {:word \"hello :3\"} into <p>hello :3</p>."
+  [ast node-table]
+  (let [type (keys ast)
+        data (->> (vals ast)
+                  (first))]
+    
+    (cond (list? data) (tag-pair "super-node"
+                                 (loop [remaining data
+                                        node (first remaining)
+                                        carry ""]
+                                   (if (empty? remaining)
+                                     carry
+                                     (recur (rest remaining)
+                                            (second remaining)
+                                            (str carry (trans-ir-xml node 'f))))))
+          
+          :else (tag-pair "node" data))))
