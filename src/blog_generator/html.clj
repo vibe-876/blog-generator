@@ -1,6 +1,17 @@
 (ns blog-generator.html
-  (:gen-class))
+  (:gen-class)
+  (:require [blog-generator.xml :as xml]))
+
 
 (defn trans-ir-html
-  [& args]
-  "HTML unimplemented.")
+  "Translate from the internal representation into
+  HTML. Just a special case of trans-ir-xml."
+  [ast]
+  (let [html-table {:body "body"
+                    :paragraph "p"
+                    :link "a"
+                    :head "head"
+                    :title "title"
+                    :header "h1"}]
+    
+    #(xml/trans-ir-xml % html-table)))
