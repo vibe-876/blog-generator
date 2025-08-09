@@ -61,8 +61,8 @@
         uri (rtake-until at-end? rhs)
         remaining (rdrop-until at-end? rhs)]
     
-    [{:link {:text (apply str text)
-             :uri (apply str uri)}}
+    [{:link (list {:text (apply str text)
+                   :uri (apply str uri)})}
      (apply str remaining)]))
 
 (defn parse-header
@@ -73,9 +73,9 @@
          current-char (first remaining-chunk)]
     
     (if (not= \# current-char)
-      [{:header {:level header-level
-                 :text (apply str (take-until #(= \newline %)
-                                              remaining-chunk))}}
+      [{:header (list {:level header-level
+                       :text (apply str (take-until #(= \newline %)
+                                                    remaining-chunk))})}
        (apply str (rdrop-until #(= \newline %) remaining-chunk))]
       
       (recur (rest remaining-chunk)
@@ -106,8 +106,8 @@
         location (rbetween #(= \@ %) #(= \newline % )camarkup-string)
         remaining (rdrop-until #(= \newline %) camarkup-string)]
     
-    [{:image {:location (apply str location)
-              :alt-text (apply str alt-text)}}
+    [{:image '({:location (apply str location)
+                :alt-text (apply str alt-text)})}
      remaining]))
 
 (defn parse-head

@@ -21,18 +21,27 @@
               (rest remaining))))))
 
 
+(defn ensure-head-exists
+  "If no head has been attached to the
+  document, throw some default one into
+  the ast."
+  [ast]
+  (if (empty? (vals ast))
+    '({:title "Blog Entry"})
+    ast))
+
 (defn fix-header
   "If a node is a header with an invalid
   level, then set it to a valid level."
   [ast-node]
-  (let [header (:header ast-node)
+  (let [header (first (:header ast-node))
         text (:text header)
         level (:level header)]
 
     (if (and header
              (> level 6))
-      {:header {:level 6
-                :text text}}
+      {:header (list {:level 6
+                      :text text})}
       ast-node)))
 
 (defn organise-ast
@@ -40,7 +49,8 @@
   [ast]
   {:head (->> ast
               (map :head)
-              (filter #(not= nil %)))
+              (filter #(not= nil %))
+              (ensure-head-exists))
    
    :body (->> ast
               (filter #(= (:head %) nil))
