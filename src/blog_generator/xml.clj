@@ -37,7 +37,7 @@
         data (->> (vals ast)
                   (first))]
     
-    (cond (list? data) (build-tag symbol-type type-table
+    (cond (seq? data) (build-tag symbol-type type-table
                                   (loop [remaining data
                                          node (first remaining)
                                          carry ""]
