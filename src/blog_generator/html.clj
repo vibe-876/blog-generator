@@ -12,6 +12,9 @@
                     :link "a"
                     :head "head"
                     :title "title"
-                    :header "h1"}]
+                    :header "h1"
+                    :word "p"}]
     
-    #(xml/trans-ir-xml % html-table)))
+    (str "<html>"
+         (xml/trans-ir-xml html-table ast)
+         "</html>")))

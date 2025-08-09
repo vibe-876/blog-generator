@@ -9,14 +9,16 @@
   ([tag data]
    (apply str ["<" tag ">" data "</" tag ">"])))
 
-(defn decipher-type
+(defn build-tag
   "Serves the same purpose as (:symbol map), but
-  with a little bit of error handling."
-  [s-type type-table]
-  (let [d-type (s-type type-table)]
-    (if d-type
-      d-type
-      "error")))
+  with a little bit of error handling, and then calls
+  tag-pair."
+  [s-type type-table data]
+  (tag-pair (let [d-type (s-type type-table)]
+              (if d-type
+                d-type
+                "error"))
+            data))
 
 
 (defn trans-ir-xml
@@ -29,21 +31,21 @@
   The node table is a vector of keys, and tag names.
   For example, setting [{:word \"p\"}] will translate
   {:word \"hello :3\"} into <p>hello :3</p>."
-  [ast type-table]
+  [type-table ast]
   (let [symbol-type (->> (keys ast)
                          (first))
         data (->> (vals ast)
                   (first))]
     
-    (cond (list? data) (tag-pair (decipher-type symbol-type type-table)
-                                 (loop [remaining data
-                                        node (first remaining)
-                                        carry ""]
-                                   (if (empty? remaining)
-                                     carry
-                                     (recur (rest remaining)
-                                            (second remaining)
-                                            (str carry (trans-ir-xml node type-table))))))
+    (cond (list? data) (build-tag symbol-type type-table
+                                  (loop [remaining data
+                                         node (first remaining)
+                                         carry ""]
+                                    (if (empty? remaining)
+                                      carry
+                                      (recur (rest remaining)
+                                             (second remaining)
+                                             (str carry (trans-ir-xml type-table node))))))
           
-          :else (tag-pair (decipher-type symbol-type type-table)
-                          data))))
+          :else (build-tag symbol-type type-table
+                           data))))
