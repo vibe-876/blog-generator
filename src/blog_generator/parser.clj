@@ -133,6 +133,7 @@
           (= \~ start-symbol) (parse-div remaining)
           (= \; start-symbol) (parse-image remaining)
           (= \+ start-symbol) (parse-head remaining)
+          (= \newline start-symbol) [{:newline \newline} (rest remaining)]
           :else [{:error unknown-chunk} ""])))
 
 (defn lex-chunk-end
@@ -155,8 +156,8 @@
   the parsed lexeme, and the second being the remaining unparsed
   string."
   [partial-ast]
-  (let [starts [\{ \# \~ \; \+]
-        ends (concat [\  \newline] starts)
+  (let [starts [\{ \# \~ \; \+ \newline]
+        ends (concat [\ ] starts)
         fl-char (first (last partial-ast))]
     
     (tree/add-asts partial-ast (if (some #{fl-char}
