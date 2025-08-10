@@ -9,6 +9,12 @@
   ([tag data]
    (apply str ["<" tag ">" data "</" tag ">"])))
 
+
+(defn tag-single
+  "Put a thing into a single xml tag."
+  [tag data]
+  (str "<" tag " " data ">"))
+
 (defn build-tag
   "Serves the same purpose as (:symbol map), but
   with a little bit of error handling, and then calls
@@ -21,6 +27,7 @@
             data))
 
 (defn trans-link-xml
+  "Translate a link into xml."
   [data]
   (let [pair (first data)]
     (str "<a href=\"" (:uri pair) "\">"
@@ -28,12 +35,20 @@
          "</a>")))
 
 (defn trans-header-xml
+  "Translate a header into xml."
   [data]
   (let [pair (first data)
         header-tag (str \h (:level pair))]
-    (str "<" header-tag ">"
-         (:text pair)
-         "</" header-tag ">")))
+    (tag-pair header-tag
+              (:text pair))))
+
+(defn trans-head-xml
+  "Translate the head into xml."
+  [data]
+  (let [head (first data)]
+    (str (tag-pair "title" (:title head))
+         (tag-single "link"
+                     (str "rel=\"stylesheet\""" href=\"" (:css head) "\"")))))
 
 
 (defn trans-ir-xml
@@ -54,6 +69,7 @@
     
     (cond (= :link symbol-type) (trans-link-xml data)
           (= :header symbol-type) (trans-header-xml data)
+          (= :head symbol-type) (trans-head-xml data)
           (seq? data) (build-tag symbol-type type-table
                                  (loop [remaining data
                                         node (first remaining)
