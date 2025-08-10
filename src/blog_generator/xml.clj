@@ -20,6 +20,21 @@
                 "error"))
             data))
 
+(defn trans-link-xml
+  [data]
+  (let [pair (first data)]
+    (str "<a href=\"" (:uri pair) "\">"
+         (:text pair)
+         "</a>")))
+
+(defn trans-header-xml
+  [data]
+  (let [pair (first data)
+        header-tag (str \h (:level pair))]
+    (str "<" header-tag ">"
+         (:text pair)
+         "</" header-tag ">")))
+
 
 (defn trans-ir-xml
   "Translate the internal representation into
@@ -37,15 +52,17 @@
         data (->> (vals ast)
                   (first))]
     
-    (cond (seq? data) (build-tag symbol-type type-table
-                                  (loop [remaining data
-                                         node (first remaining)
-                                         carry ""]
-                                    (if (empty? remaining)
-                                      carry
-                                      (recur (rest remaining)
-                                             (second remaining)
-                                             (str carry (trans-ir-xml type-table node))))))
+    (cond (= :link symbol-type) (trans-link-xml data)
+          (= :header symbol-type) (trans-header-xml data)
+          (seq? data) (build-tag symbol-type type-table
+                                 (loop [remaining data
+                                        node (first remaining)
+                                        carry ""]
+                                   (if (empty? remaining)
+                                     carry
+                                     (recur (rest remaining)
+                                            (second remaining)
+                                            (str carry (trans-ir-xml type-table node))))))
           
           :else (build-tag symbol-type type-table
                            data))))
