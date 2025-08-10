@@ -44,6 +44,31 @@
                       :text text})}
       ast-node)))
 
+(defn take-paragraph
+  [ast]
+  (loop [remaining ast
+         node (first remaining)
+         carry '()]
+    (if (or (:newline node)
+            (empty? remaining))
+      {:car {:paragraph carry}
+       :rem (rest remaining)}
+      (recur (rest remaining)
+             (second remaining)
+             (concat carry (list node))))))
+
+(defn build-paragraphs
+  "Builds paragraphs out of word tags."
+  [ast]
+  (loop [remaining ast
+         carry '()]
+    (if (empty? remaining)
+      carry
+      (let [built (take-paragraph remaining)]
+        (recur (:rem built)
+               (concat carry (list (:car built))))))))
+
+
 (defn organise-ast
   "Organise the AST."
   [ast]
@@ -52,6 +77,7 @@
               (filter #(not= nil %))
               (ensure-head-exists))
    
-   :body (->> ast
-              (filter #(= (:head %) nil))
-              (map fix-header))})
+   :body  (->> ast
+               (filter #(= (:head %) nil))
+               (map fix-header)
+               (build-paragraphs))})
