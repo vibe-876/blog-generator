@@ -14,12 +14,13 @@ And most importantly by a while, I <3 programming in Clojure, and if I can find 
 The spec for camarkup is [[file:doc/markup.org][here]].
 
 * Building and Usage
-You'll need:
+For building, you'll need:
 - [[https://leiningen.org/][Leiningen]]
 - The JVM (to run the uberjar)
 
 Then, it's as simple as cloning the directory, and running ~lein uberjar~ to get an uberjar.
 I'd recommend however, that you run ~lein test~ before this, to ensure that I haven't pushed some breaking change into the master branch.
 
-There's a GNU Emacs mode for camarkup, [[file:camarkup-mode.el][just here]].
+There's a GNU Emacs mode for camarkup, [[file:camarkup-mode.el][just here]], I'd recommend using it if you use Emacs.
 Documentation for it is found [[file:doc/camarkup-mode.org][here]].
+Should you use some other editor, and you write your own extension for it, feel free to ping me, and I'll happily link it in this file.
